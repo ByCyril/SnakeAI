@@ -178,7 +178,7 @@ function update() {
 
 }
 
-function isHittingSeld() {
+function isHittingSelf() {
 	var className = get(snakeX, snakeY);
 
 	if (className == "snake") {
