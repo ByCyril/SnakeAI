@@ -1,13 +1,13 @@
 //settings
-var snakeX = 2;
-var snakeY = 2;
+var snakeX = 15;
+var snakeY = 15;
 var height = 30;
 var width = 30;
-var interval = 100; 
+var interval = 50; 
 var increment = 1;
 
 //game variables
-var length = 1;
+var length = 0;
 var tailX = [snakeX];
 var tailY = [snakeY];
 var fX;
@@ -17,6 +17,8 @@ var gameOver = false;
 var direction = -1 // up = 0, down = -1, left = 1, right = 2
 var int;
 var score = 0;
+var distance = 100000;
+
 
 // 
 // Entry point of the game
@@ -32,6 +34,8 @@ function init() {
 	createMap();
 	createSnake();
 	createFruit();
+
+
 }
 
 // 
@@ -39,7 +43,8 @@ function init() {
 // 
 
 function createMap() {
-	document.write("<table>");
+
+	document.write("<center><table>");
 
 	for (var y = 0; y < height; y++) {
 
@@ -56,7 +61,7 @@ function createMap() {
 		document.write("</tr>");
 	}
 
-	document.write("</table>");
+	document.write("</table></center>");
 }
 
 function createSnake() {
@@ -87,8 +92,8 @@ function createFruit() {
 	var found = false;
 
 	while(!found && (length < (width - 2) * (height - 2) + 1)) {
-		var fruitX = rand(1, width - 1);
-		var fruitY = rand(1, height - 1);
+		var fruitX = rand(2, width - 2);
+		var fruitY = rand(2, height - 2);
 
 		if (getType(fruitX, fruitY) == "blank") {
 			found = true;
@@ -99,22 +104,18 @@ function createFruit() {
 	set(fruitX, fruitY, "fruit");
 	fX = fruitX;
 	fY = fruitY;
-
 }
 
 window.addEventListener("keypress", function key() {
 
 	//if key is W set direction up
 	var key = event.keyCode;
+	print(key);
 
-	if (direction != -1 && (key == 119 || key == 87)) {
-		direction = 0; // direction up
-	} else if (direction != 0 && (key == 115 || key == 83)) {
-		direction = -1 //direction down
-	} else if (direction != 2 && (key == 97 || key == 65)) {
-		direction = 1 // direction left
-	} else if (direction != 1 && (key == 100 || key == 68)) {
-		direction = 2 // direction right
+	if (key == 13) {
+
+
+		
 	}
 
 	if (!running) {
@@ -122,7 +123,6 @@ window.addEventListener("keypress", function key() {
 	} else if (key == 32) {
 		running = false
 	}
-
 
 
 });
@@ -138,50 +138,120 @@ function gameLoop() {
 
 function update() {
 	set(fX, fY, "fruit");
-	updateTail();
-	set(tailX[length], tailY[length], "blank");
 
-	if (direction == 0) {
-		snakeY--;
-	} else if (direction == -1) {
-		snakeY++;
-	} else if (direction == 1) {
+	// up = 0, down = -1, left = 1, right = 2
+
+	if (direction == 1) {
 		snakeX--;
+		direction = 1
+
+		if (getDistance() == false) {
+			snakeX++;
+			snakeY--;
+			direction = 0;
+
+			if (getDistance() == false) {
+				snakeY += 2;
+				direction = -1
+			}
+		}
 	} else if (direction == 2) {
 		snakeX++;
+		direction = 2
+
+		if (getDistance() == false) {
+			snakeX--;
+			snakeY--;
+			direction = 0;
+
+			if (getDistance() == false) {
+				snakeY += 2;
+				direction = -1
+			}
+		}	
+	} else if (direction == -1) {
+		snakeY++;
+		direction = -1
+
+		if (getDistance() == false) {
+			snakeY--;
+			snakeX++;
+			direction = 2;
+
+			if (getDistance() == false) {
+				snakeX -= 2;
+				direction = 1
+			}
+		}
+	} else if (direction == 0) {
+		snakeY--;
+		direction = 0
+
+		if (getDistance() == false) {
+			snakeY++;
+			snakeX--;
+			direction = 1
+
+			if (getDistance() == false) {
+				snakeX += 2;
+				direction = 2
+			}
+		}
 	}
 
-	set(snakeX, snakeY, "snake");
+
 
 	for (var i = tailX.length - 1; i >= 0; i--) {
 
 		if (snakeX == tailX[i] && snakeY == tailY[i]) {
-			document.getElementById("gameover").innerHTML = "Game Over"
+			
+			// up = 0, down = -1, left = 1, right = 2
+			print(direction)
+
+			if (direction == 1 || direction == 2) {
+				snakeY++;
+				direction = -1
+				if (snakeX == tailX[i] && snakeY == tailY[i]) {
+					snakeY--;
+					direction = 0
+				}
+			} else if (direction == -1 || direction == 0) {
+				snakeX++;
+				direction = 2
+				if (snakeX == tailX[i] && snakeY == tailY[i]) {
+					snakeX -= 2;
+					direction = 1
+				}
+			} 
+
+			print(direction)
+			// set(snakeX, snakeY, "snake");
 
 			gameOver = true;
-
 			break;
 		}
 	}
-
-	if (snakeX == 0 || snakeX == width - 1 || snakeY == 0 || snakeY == height - 1) {
-
-		document.getElementById("gameover").innerHTML = "Game Over"
-
-		gameOver = true;
-
-	}
+	updateTail();
+	set(tailX[length], tailY[length], "blank");
+	
+	set(snakeX, snakeY, "snake");
 
 	if (snakeX == fX && snakeY == fY) {
+	
+		distance = 100000;
 		createFruit();
 		length += increment;
 		score += increment;
 	}
 
+
 	document.getElementById("score").innerHTML = "Score: " + score;
 }
 
+
 function updateTail() {
+
+	print("here")
 	for (var i = length; i > 0; i--) {
 		tailX[i] = tailX[i-1];
 		tailY[i] = tailY[i-1];
@@ -189,6 +259,32 @@ function updateTail() {
 
 	tailX[0] = snakeX;
 	tailY[0] = snakeY;
+}
+
+function isHittingWall(x, y, func) {
+
+	if (snakeX == 0 || snakeX == width - 1 || snakeY == 0 || snakeY == height - 1) {
+		func();
+	} 
+}
+
+function getDistance() {
+	var xs = Math.pow(snakeX - fX, 2);
+	var ys = Math.pow(snakeY - fY, 2);
+	var d = Math.sqrt(xs + ys);
+
+	if (d < distance) {
+		distance = d
+		return true;
+	} else {
+		return false;
+	}
+
+
+}
+
+function print(x) {
+	console.log(x)
 }
 
 run();

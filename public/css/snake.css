@@ -16,20 +16,25 @@ td {
 
 .blank {
 	background-color: blank;
-
+	border-radius: 10px;
 }
 
 .snake {
 	background-color: white;
-
+	border-radius: 10px;
 }
 
 .wall {
 	background-color: green;
+	border-radius: 10px;
 }
 
 .fruit {
 	background-color: red;
-
+	border-radius: 10px;
 }
 
+.head {
+	background-color: blue;
+	border-radius: 10px;
+}
