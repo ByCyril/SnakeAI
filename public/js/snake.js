@@ -134,13 +134,12 @@ function update() {
 	// up = 0, down = -1, left = 1, right = 2
 
 	navigation()
+	isFoodCaught()
+	updateTail();
 
 	set(tailX[length], tailY[length], "blank");
 
-	isFoodCaught()
-	
 	set(snakeX, snakeY, "snake");
-	updateTail();
 
 	document.getElementById("score").innerHTML = "Score: " + score;
 
@@ -247,12 +246,6 @@ function navigation() {
 			}
 		}
 	}
-}
-function isHittingWall(x, y, func) {
-
-	if (snakeX == 0 || snakeX == width - 1 || snakeY == 0 || snakeY == height - 1) {
-		func();
-	} 
 }
 
 function getDistance() {
