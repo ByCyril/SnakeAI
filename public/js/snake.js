@@ -110,20 +110,12 @@ window.addEventListener("keypress", function key() {
 
 	//if key is W set direction up
 	var key = event.keyCode;
-	print(key);
 
-	if (key == 13) {
-
-
-		
-	}
-
-	if (!running) {
-		running = true
+	if (key == 13 || !running) {
+		running = true;
 	} else if (key == 32) {
-		running = false
+		running = false;
 	}
-
 
 });
 
@@ -141,6 +133,95 @@ function update() {
 
 	// up = 0, down = -1, left = 1, right = 2
 
+	navigation()
+
+	set(tailX[length], tailY[length], "blank");
+
+	isFoodCaught()
+	
+	set(snakeX, snakeY, "snake");
+	updateTail();
+
+	document.getElementById("score").innerHTML = "Score: " + score;
+
+	// for (var i = tailX.length - 1; i >= 0; i--) {
+
+	// 	if (snakeX == tailX[i] && snakeY == tailY[i]) {
+			
+	// 		// up = 0, down = -1, left = 1, right = 2
+	// 		print(direction)
+
+	// 		if (direction == 1 || direction == 2) {
+	// 			snakeY++;
+	// 			direction = -1
+	// 			if (snakeX == tailX[i] && snakeY == tailY[i]) {
+	// 				snakeY--;
+	// 				direction = 0
+	// 			}
+	// 		} else if (direction == -1 || direction == 0) {
+	// 			snakeX++;
+	// 			direction = 2
+	// 			if (snakeX == tailX[i] && snakeY == tailY[i]) {
+	// 				snakeX -= 2;
+	// 				direction = 1
+	// 			}
+	// 		} 
+
+	// 		print(direction)
+
+	// 		gameOver = true;
+	// 		break;
+	// 	}
+
+	// 	print("checking")
+	// }
+
+}
+
+function isHittingSeld() {
+	var className = get(snakeX, snakeY);
+
+	if (className == "snake") {
+		if (direction == 1 || direction == 2) {
+			snakeY++;
+			direction = -1;
+			if (snakeX == tailX[i] && snakeY == tailY[i]) {
+				snakeY--;
+				direction = 0;
+			}
+		} else if (direction == -1 || direction == 0) {
+			snakeX++;
+			direction = 2;
+			if (snakeX == tailX[i] && snakeY == tailY[i]) {
+				snakeX -= 2;
+				direction = 1;
+			}
+		} 
+	}
+}
+
+function isFoodCaught() {
+	if (snakeX == fX && snakeY == fY) {
+	
+		distance = 100000;
+		createFruit();
+		length += increment;
+		score += increment;
+	}
+}
+
+function updateTail() {
+
+	for (var i = length; i > 0; i--) {
+		tailX[i] = tailX[i-1];
+		tailY[i] = tailY[i-1];
+	}
+
+	tailX[0] = snakeX;
+	tailY[0] = snakeY;
+}
+
+function navigation() {
 	if (direction == 1) {
 		snakeX--;
 		direction = 1
@@ -198,69 +279,7 @@ function update() {
 			}
 		}
 	}
-
-
-
-	for (var i = tailX.length - 1; i >= 0; i--) {
-
-		if (snakeX == tailX[i] && snakeY == tailY[i]) {
-			
-			// up = 0, down = -1, left = 1, right = 2
-			print(direction)
-
-			if (direction == 1 || direction == 2) {
-				snakeY++;
-				direction = -1
-				if (snakeX == tailX[i] && snakeY == tailY[i]) {
-					snakeY--;
-					direction = 0
-				}
-			} else if (direction == -1 || direction == 0) {
-				snakeX++;
-				direction = 2
-				if (snakeX == tailX[i] && snakeY == tailY[i]) {
-					snakeX -= 2;
-					direction = 1
-				}
-			} 
-
-			print(direction)
-			// set(snakeX, snakeY, "snake");
-
-			gameOver = true;
-			break;
-		}
-	}
-	updateTail();
-	set(tailX[length], tailY[length], "blank");
-	
-	set(snakeX, snakeY, "snake");
-
-	if (snakeX == fX && snakeY == fY) {
-	
-		distance = 100000;
-		createFruit();
-		length += increment;
-		score += increment;
-	}
-
-
-	document.getElementById("score").innerHTML = "Score: " + score;
 }
-
-
-function updateTail() {
-
-	print("here")
-	for (var i = length; i > 0; i--) {
-		tailX[i] = tailX[i-1];
-		tailY[i] = tailY[i-1];
-	}
-
-	tailX[0] = snakeX;
-	tailY[0] = snakeY;
-}
-
 function isHittingWall(x, y, func) {
 
 	if (snakeX == 0 || snakeX == width - 1 || snakeY == 0 || snakeY == height - 1) {
