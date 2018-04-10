@@ -34,8 +34,6 @@ function init() {
 	createMap();
 	createSnake();
 	createFruit();
-
-
 }
 
 // 
@@ -76,6 +74,13 @@ function set(x, y, value) {
 
 	if (x != null && y != null) {
 		get(x, y).setAttribute("class", value);	
+
+		if (value == "snake") {
+			print("d: " + x + "-" + y + " " + direction)	
+			print("")
+		
+		}
+		
 	}
 	
 }
@@ -110,11 +115,15 @@ window.addEventListener("keypress", function key() {
 
 	//if key is W set direction up
 	var key = event.keyCode;
+	document.getElementById("start").style.display = "none";
 
 	if (key == 13 || !running) {
 		running = true;
 	} else if (key == 32) {
 		running = false;
+		document.getElementById("start").style.display = "block";
+		document.getElementById("start").innerHTML = "Paused. Press the space bar to continue";
+
 	}
 
 });
@@ -128,76 +137,76 @@ function gameLoop() {
 	}
 }
 
+var sum = 0
+
 function update() {
 	set(fX, fY, "fruit");
 
 	// up = 0, down = -1, left = 1, right = 2
+	print("a: " + snakeX + "-" + snakeY + " " + direction)
 
 	navigation()
+	// isHittingSelf();
 
 	set(tailX[length], tailY[length], "blank");
-
-	isFoodCaught()
-	
 	set(snakeX, snakeY, "snake");
 	updateTail();
 
+	isFoodCaught()
+
 	document.getElementById("score").innerHTML = "Score: " + score;
 
-	// for (var i = tailX.length - 1; i >= 0; i--) {
-
-	// 	if (snakeX == tailX[i] && snakeY == tailY[i]) {
-			
-	// 		// up = 0, down = -1, left = 1, right = 2
-	// 		print(direction)
-
-	// 		if (direction == 1 || direction == 2) {
-	// 			snakeY++;
-	// 			direction = -1
-	// 			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-	// 				snakeY--;
-	// 				direction = 0
-	// 			}
-	// 		} else if (direction == -1 || direction == 0) {
-	// 			snakeX++;
-	// 			direction = 2
-	// 			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-	// 				snakeX -= 2;
-	// 				direction = 1
-	// 			}
-	// 		} 
-
-	// 		print(direction)
-
-	// 		gameOver = true;
-	// 		break;
-	// 	}
-
-	// 	print("checking")
-	// }
 
 }
 
-function isHittingSeld() {
-	var className = get(snakeX, snakeY);
+function isHittingSelf() {
+	var className;
+
+	// up = 0, down = -1, left = 1, right = 2
+	var x = snakeX;
+	var y = snakeY;
+
+	if (direction == 0) {
+		y--;
+		className = getType(x, y);
+	} else if (direction == -1) {
+		y++;
+		className = getType(x, y);
+	} else if (direction == 1) {
+		x--;
+		className = getType(x, y);
+	} else if (direction == 2) {
+		x++;
+		className = getType(x, y);
+	}
 
 	if (className == "snake") {
 		if (direction == 1 || direction == 2) {
 			snakeY++;
 			direction = -1;
-			if (snakeX == tailX[i] && snakeY == tailY[i]) {
+			if (className == "snake") {
 				snakeY--;
 				direction = 0;
 			}
 		} else if (direction == -1 || direction == 0) {
 			snakeX++;
 			direction = 2;
-			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-				snakeX -= 2;
+				if (className == "snake") {
+
+				snakeX--;
 				direction = 1;
 			}
 		} 
+		document.getElementById("gameover").innerHTML = "Game Over! Refresh the page to restart."
+
+		gameOver = true;
+
 	}
+
+	print("c: " + snakeX + "-" + snakeY + " " + direction)
+
+
+
 }
 
 function isFoodCaught() {
@@ -219,6 +228,8 @@ function updateTail() {
 
 	tailX[0] = snakeX;
 	tailY[0] = snakeY;
+
+
 }
 
 function navigation() {
@@ -279,15 +290,19 @@ function navigation() {
 			}
 		}
 	}
-}
-function isHittingWall(x, y, func) {
 
-	if (snakeX == 0 || snakeX == width - 1 || snakeY == 0 || snakeY == height - 1) {
-		func();
-	} 
+	print("b: " + snakeX + "-" + snakeY + " " + direction)
+	isHittingSelf()
+
 }
+// function isHittingWall(x, y, func) {
+// 	if (snakeX == 0 || snakeX == width - 1 || snakeY == 0 || snakeY == height - 1) {
+// 		func();
+// 	} 
+// }
 
 function getDistance() {
+
 	var xs = Math.pow(snakeX - fX, 2);
 	var ys = Math.pow(snakeY - fY, 2);
 	var d = Math.sqrt(xs + ys);
@@ -298,6 +313,7 @@ function getDistance() {
 	} else {
 		return false;
 	}
+	
 
 
 }
