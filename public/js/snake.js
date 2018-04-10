@@ -144,38 +144,6 @@ function update() {
 
 	document.getElementById("score").innerHTML = "Score: " + score;
 
-	// for (var i = tailX.length - 1; i >= 0; i--) {
-
-	// 	if (snakeX == tailX[i] && snakeY == tailY[i]) {
-			
-	// 		// up = 0, down = -1, left = 1, right = 2
-	// 		print(direction)
-
-	// 		if (direction == 1 || direction == 2) {
-	// 			snakeY++;
-	// 			direction = -1
-	// 			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-	// 				snakeY--;
-	// 				direction = 0
-	// 			}
-	// 		} else if (direction == -1 || direction == 0) {
-	// 			snakeX++;
-	// 			direction = 2
-	// 			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-	// 				snakeX -= 2;
-	// 				direction = 1
-	// 			}
-	// 		} 
-
-	// 		print(direction)
-
-	// 		gameOver = true;
-	// 		break;
-	// 	}
-
-	// 	print("checking")
-	// }
-
 }
 
 function isHittingSelf() {
