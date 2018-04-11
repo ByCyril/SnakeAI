@@ -3,7 +3,7 @@ var snakeX = 15;
 var snakeY = 15;
 var height = 30;
 var width = 30;
-var interval = 50; 
+var interval = 15; 
 var increment = 1;
 
 //game variables
@@ -113,8 +113,10 @@ window.addEventListener("keypress", function key() {
 
 	if (key == 13 || !running) {
 		running = true;
+		document.getElementById("label").innerHTML = ""
 	} else if (key == 32) {
 		running = false;
+		document.getElementById("label").innerHTML = "Paused. Press the space bar to continue."
 	}
 
 });
@@ -135,9 +137,10 @@ function update() {
 
 	navigation()
 	isFoodCaught()
-	updateTail();
 
 	set(tailX[length], tailY[length], "blank");
+	updateTail();
+	isHittingSelf();
 
 	set(snakeX, snakeY, "snake");
 
@@ -146,24 +149,14 @@ function update() {
 }
 
 function isHittingSelf() {
-	var className = get(snakeX, snakeY);
-
+	var className = getType(snakeX, snakeY);
+	print(className)
 	if (className == "snake") {
-		if (direction == 1 || direction == 2) {
-			snakeY++;
-			direction = -1;
-			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-				snakeY--;
-				direction = 0;
-			}
-		} else if (direction == -1 || direction == 0) {
-			snakeX++;
-			direction = 2;
-			if (snakeX == tailX[i] && snakeY == tailY[i]) {
-				snakeX -= 2;
-				direction = 1;
-			}
-		} 
+		
+		gameOver = true;
+		document.getElementById("label").innerHTML = "Game Over! Refresh the page to restart.";
+
+		
 	}
 }
 
