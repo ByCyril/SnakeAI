@@ -27,15 +27,12 @@ var distance = 100000;
 function run() {
 	init();
 	int = setInterval(gameLoop, interval);
-
 }
 
 function init() {
 	createMap();
 	createSnake();
 	createFruit();
-
-
 }
 
 // 
@@ -66,26 +63,6 @@ function createMap() {
 
 function createSnake() {
 	set(snakeX, snakeY, "snake");
-}
-
-function get(x, y) {
-	return document.getElementById(x + "-" + y);
-}
-
-function set(x, y, value) {
-
-	if (x != null && y != null) {
-		get(x, y).setAttribute("class", value);	
-	}
-	
-}
-
-function rand(min, max) {
-	return Math.floor(Math.random() * (max - min) + min)
-}
-
-function getType(x, y) {
-	return get(x, y).getAttribute("class");
 }
 
 function createFruit() {
@@ -139,6 +116,7 @@ function update() {
 	isFoodCaught()
 
 	set(tailX[length], tailY[length], "blank");
+	
 	updateTail();
 	isHittingSelf();
 
@@ -149,14 +127,12 @@ function update() {
 }
 
 function isHittingSelf() {
+
 	var className = getType(snakeX, snakeY);
-	print(className)
+
 	if (className == "snake") {
-		
 		gameOver = true;
 		document.getElementById("label").innerHTML = "Game Over! Refresh the page to restart.";
-
-		
 	}
 }
 
@@ -254,10 +230,6 @@ function getDistance() {
 	}
 
 
-}
-
-function print(x) {
-	console.log(x)
 }
 
 run();
