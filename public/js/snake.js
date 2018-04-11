@@ -61,10 +61,6 @@ function createMap() {
 	document.write("</table></center>");
 }
 
-function createSnake() {
-	set(snakeX, snakeY, "snake");
-}
-
 function createFruit() {
 	var found = false;
 
@@ -116,7 +112,7 @@ function update() {
 	isFoodCaught()
 
 	set(tailX[length], tailY[length], "blank");
-	
+
 	updateTail();
 	isHittingSelf();
 
