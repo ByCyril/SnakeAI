@@ -2,8 +2,8 @@
 var snakeX = 15;
 var snakeY = 15;
 var height = 30;
-var width = 30;
-var interval = 15; 
+var width = 50;
+var interval = 25; 
 var increment = 1;
 
 //game variables
