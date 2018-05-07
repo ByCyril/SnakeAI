@@ -79,6 +79,13 @@ function createFruit() {
 	fY = fruitY;
 }
 
+document.addEventListener("click", function(){
+
+	running = true;
+	document.getElementById("label").innerHTML = ""
+
+});
+
 window.addEventListener("keypress", function key() {
 
 	//if key is W set direction up
