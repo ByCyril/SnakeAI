@@ -7,7 +7,7 @@ var interval = 25;
 var increment = 1;
 
 //game variables
-var length = 0;
+var length = 4;
 var tailX = [snakeX];
 var tailY = [snakeY];
 var fX;
@@ -144,7 +144,7 @@ function isFoodCaught() {
 	
 		distance = 100000;
 		createFruit();
-		length += increment;
+		// length += increment;
 		score += increment;
 	}
 }
